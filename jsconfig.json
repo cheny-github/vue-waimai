@@ -1,0 +1,7 @@
+{
+    "include": [
+      "./src/**/*",
+      "node_modules/mint-ui/*",
+      "node_modules/vuex/*"
+    ]
+}

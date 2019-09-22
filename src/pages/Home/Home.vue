@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header :title="'good good study day day up'">
+    <Header :title="address">
         <span class="iconfont icon-sousuo" slot="left"></span>
         <span class="btns" slot="right">
             <a >登录</a>|<a >注册</a>
@@ -11,114 +11,19 @@
                 <!-- Additional required wrapper -->
                 <div class="swiper-wrapper">
                     <!-- Slides -->
-                    <div class="swiper-slide">
+                    <div class="swiper-slide"
+                     v-for="(categoriesItem,index) in categoriesArr" :key="index">
                         <!-- 强调食物种类的时候food可数 -->
-                        <ul class="foods">
-                            <li class="food">
-                                <a >
-                                    <img src="./images/nav/1.jpg" width="50" height="50" />
-                                    <span>辣条</span>
-                                </a>
-                            </li>
-                            <li class="food">
-                                <a >
-                                    <img src="./images/nav/2.jpg" width="50" height="50" />
-                                    <span>辣条</span>
-                                </a>
-                            </li>
-                            <li class="food">
-                                <a >
-                                    <img src="./images/nav/3.jpg" width="50" height="50" />
-                                    <span>辣条</span>
-                                </a>
-                            </li>
-                            <li class="food">
-                                <a >
-                                    <img src="./images/nav/4.jpg" width="50" height="50" />
-                                    <span>辣条</span>
+                        <ul class="foods" v-for="(categories,index) in categoriesItem " :key="index">
+                            <li class="food" v-for="category in categories" :key="category.id">
+                                <a>
+                                    <img 
+                                    :src="`https://fuss10.elemecdn.com${category.image_url}`"
+                                    width="50" height="50" />
+                                    <span>{{category.title}}</span>
                                 </a>
                             </li>
                         </ul>
-                        <ul class="foods">
-                            <li class="food">
-                                <a >
-                                    <img src="./images/nav/5.jpg" width="50" height="50" />
-                                    <span>辣条</span>
-                                </a>
-                            </li>
-                            <li class="food">
-                                <a >
-                                    <img src="./images/nav/6.jpg" width="50" height="50" />
-                                    <span>辣条</span>
-                                </a>
-                            </li>
-                            <li class="food">
-                                <a >
-                                    <img src="./images/nav/7.jpg" width="50" height="50" />
-                                    <span>辣条</span>
-                                </a>
-                            </li>
-                            <li class="food">
-                                <a >
-                                    <img src="./images/nav/8.jpg" width="50" height="50" />
-                                    <span>辣条</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="swiper-slide">
-                            <ul class="foods">
-                                    <li class="food">
-                                        <a >
-                                            <img src="./images/nav/9.jpg" width="50" height="50" />
-                                            <span>辣条</span>
-                                        </a>
-                                    </li>
-                                    <li class="food">
-                                        <a >
-                                            <img src="./images/nav/10.jpg" width="50" height="50" />
-                                            <span>辣条</span>
-                                        </a>
-                                    </li>
-                                    <li class="food">
-                                        <a >
-                                            <img src="./images/nav/11.jpg" width="50" height="50" />
-                                            <span>辣条</span>
-                                        </a>
-                                    </li>
-                                    <li class="food">
-                                        <a >
-                                            <img src="./images/nav/12.jpg" width="50" height="50" />
-                                            <span>辣条</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                                <ul class="foods">
-                                    <li class="food">
-                                        <a >
-                                            <img src="./images/nav/13.jpg" width="50" height="50" />
-                                            <span>辣条</span>
-                                        </a>
-                                    </li>
-                                    <li class="food">
-                                        <a >
-                                            <img src="./images/nav/14.jpg" width="50" height="50" />
-                                            <span>辣条</span>
-                                        </a>
-                                    </li>
-                                    <li class="food">
-                                        <a >
-                                            <img src="./images/nav/1.jpg" width="50" height="50" />
-                                            <span>辣条</span>
-                                        </a>
-                                    </li>
-                                    <li class="food">
-                                        <a >
-                                            <img src="./images/nav/1.jpg" width="50" height="50" />
-                                            <span>辣条</span>
-                                        </a>
-                                    </li>
-                                </ul>
                     </div>
                 </div>
                 <!-- If we need pagination -->
@@ -130,113 +35,42 @@
                   附近商家
             </div>
             <ul>
-                <li>
+                <li
+                :key="shop.id" 
+                @click="$router.push('/shop')"
+                v-for="shop in shops" 
+                >
                     <div class="left">
-                        <img src="./images/shop/1.jpg" alt="商家">
+                        <img :src="'https://fuss10.elemecdn.com'+shop.image_path" alt="商家">
                     </div>
                     <div class="center">
                         <div class="title">
                             <span class="pingpai">品牌</span>
                             <span class="biaoti">
-                                脆皮鸡，麻辣香锅，温馨粥道，烧烤，盖浇饭，红烧肉
+                                {{shop.name}}
                             </span>
                         </div>
                         <div class="score"> 
-                            <span class="stars">
-                                <span class="star"></span>
-                                <span class="star"></span>
-                                <span class="star"></span>
-                                <span class="star"></span>
-                                <span class="star"></span>
-                            </span>
-                            <span class="score-text">3.1</span>
-                            <span class="sales">月销量106单</span>
+                            <Stars :scoreText="shop.rating"></Stars>
+                            <span class="score-text">{{shop.rating}}</span>
+                            <span class="sales">月销量{{shop.recent_order_num}}单</span>
                         </div>
-                        <div class="price">￥20起送/配送费￥3</div>
+                        <div class="price">￥{{shop.float_minimum_order_amount}}起送/配送费￥{{shop.float_delivery_fee}}</div>
                     </div>
                     <div class="right">
                         <!-- 服务 -->
                         <div class="top">
-                            <span class="span1">保</span>
-                            <span class="span1">准</span>
-                            <span class="span1">票</span>
+                            <span  
+                            v-for="support in shop.supports" 
+                            :key="support.id"
+                            class="span1"
+                            :style="{color:shop.icon_color}"
+                            >
+                                {{support.icon_name}}
+                            </span>
                         </div>
                         <div class="bottom">
-                            <span class="zhuansong">硅谷专送</span>
-                            <span class="zhunshi">准时达</span>
-                        </div>
-                    </div>
-                </li> 
-                <li>
-                    <div class="left">
-                        <img src="./images/shop/2.jpg" alt="商家">
-                    </div>
-                    <div class="center">
-                        <div class="title">
-                            <span class="pingpai">品牌</span>
-                            <span class="biaoti">
-                                脆皮鸡，麻辣香锅，温馨粥道，烧烤，盖浇饭，红烧肉
-                            </span>
-                        </div>
-                        <div class="score"> 
-                            <span class="stars">
-                                <span class="star"></span>
-                                <span class="star"></span>
-                                <span class="star"></span>
-                                <span class="star"></span>
-                                <span class="star"></span>
-                            </span>
-                            <span class="score-text">4.1</span>
-                            <span class="sales">月销量106单</span>
-                        </div>
-                        <div class="price">￥20起送/配送费￥3</div>
-                    </div>
-                    <div class="right">
-                        <!-- 服务 -->
-                        <div class="top">
-                            <span class="span1">保</span>
-                            <span class="span1">准</span>
-                            <span class="span1">票</span>
-                        </div>
-                        <div class="bottom">
-                            <span class="zhuansong">硅谷专送</span>
-                            <span class="zhunshi">准时达</span>
-                        </div>
-                    </div>
-                </li> 
-                <li>
-                    <div class="left">
-                        <img src="./images/shop/3.jpg" alt="商家">
-                    </div>
-                    <div class="center">
-                        <div class="title">
-                            <span class="pingpai">品牌</span>
-                            <span class="biaoti">
-                                脆皮鸡，麻辣香锅，温馨粥道，烧烤，盖浇饭，红烧肉
-                            </span>
-                        </div>
-                        <div class="score"> 
-                            <span class="stars">
-                                <span class="star"></span>
-                                <span class="star"></span>
-                                <span class="star"></span>
-                                <span class="star"></span>
-                                <span class="star"></span>
-                            </span>
-                            <span class="score-text">5</span>
-                            <span class="sales">月销量1006单</span>
-                        </div>
-                        <div class="price">￥10起送/配送费￥3</div>
-                    </div>
-                    <div class="right">
-                        <!-- 服务 -->
-                        <div class="top">
-                            <span class="span1">保</span>
-                            <span class="span1">准</span>
-                            <span class="span1">票</span>
-                        </div>
-                        <div class="bottom">
-                            <span class="zhuansong">硅谷专送</span>
+                            <span class="zhuansong">{{shop.delivery_mode.text}}</span>
                             <span class="zhunshi">准时达</span>
                         </div>
                     </div>
@@ -250,8 +84,46 @@
 </template>
 
 <script>
+import 'swiper/css/swiper.min.css';
+import Swiper from 'swiper';
+import {mapGetters,mapState} from 'vuex';
+import Stars from '../../components/Stars/Stars';
 export default {
+    name:'Home',
+    components:{
+        Stars
+    },
+    async mounted() {
+        this.$store.dispatch('getAddress',()=>{
+            this.address=this.$store.state.address.address 
+        });
+        //swiper必须在界面渲染完成后才能初始化，数据改了并不代表着页面渲染完毕，需要勾在nextTick上初始化swiper。
 
+        this.$store.dispatch('getCategories',()=>{
+            this.$nextTick(
+                ()=>{
+                    new Swiper('.swiper-container', {
+                        loop: true,
+                        pagination: {
+                        el: '.swiper-pagination'
+                        }
+                    })
+                }
+            )
+        })
+        //也可以 await this.$store.dispatch('getCategories')
+        // 当这个promise有结果后 页面已经渲染完成了  
+        this.$store.dispatch('getShopList')
+    },
+    data() {
+        return {
+            address:'正在获取位置信息...'
+        }
+    },
+    computed: {
+        ...mapGetters(['categoriesArr']),
+        ...mapState(['shops'])
+    },
 }
 </script>
 
@@ -270,6 +142,7 @@ export default {
           .foods
               height 50%
               display flex
+              margin-top 5px
               justify-content space-around
               .food
                   a
@@ -326,22 +199,7 @@ export default {
                       font-size 10px 
                       .score-text
                           color #ff9c60
-                      .stars
-                          display flex
-                          .star
-                              height 10px
-                              width 10px
-                              font-size 0px
-                              margin 0 1px
-                              background url('./images/stars/star_off.png') 
-                              background-size cover
-
-                              @media (-webkit-min-device-pixel-ratio:2),(min-resolution:2)
-                                  background url('./images/stars/star_off@2x.png') 
-                                  background-size cover
-                              @media (-webkit-min-device-pixel-ratio:3),(min-resolution:3)
-                                  background url('./images/stars/star_off@3x.png') 
-                                  background-size cover
+                      
                       .sales
                               color #7a7a7a
                   .price

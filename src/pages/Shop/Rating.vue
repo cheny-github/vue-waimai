@@ -1,6 +1,6 @@
 <template>
   <div>
-      Restaurant
+      评价
   </div>
 </template>
 

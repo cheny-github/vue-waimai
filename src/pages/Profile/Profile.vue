@@ -2,18 +2,26 @@
   <div>
     <Header :title="'我的'"></Header>
     <div class="page">
-      <div class="login">
+      <div class="login" @click="goLogin">
         <div class="user"> 
           <i class="iconfont icon-person"></i>
           <div class="flex-container">
-              <span>登录/注册</span> 
-              <span>
+              <span 
+                :class="{username:user.name}"
+                v-if="!user._id || user.name"
+              >
+                {{user.name?user.name:'登录/注册'}}
+              </span> 
+              <span
+               :class="{username:user.phone}"
+               v-if="!user._id || user.phone"
+              >
                 <i class="iconfont icon-shouji"></i>
-                暂无绑定手机号
+                {{userId?user.phone:'暂无绑定手机号'}}
               </span>
           </div>
           </div>
-        <i class="iconfont icon-jiantou1"></i>
+        <i class="iconfont icon-jiantou1" v-if="!userId"></i>
       </div>
       <!-- 余额，优惠 积分 -->
       <div class="info">
@@ -69,14 +77,38 @@
             </span>
         </li>
       </ul>
+      <mt-button 
+       type="danger" 
+       class="btn-logout" 
+       @click="clickLogOut"
+       v-if="userId"
+      >
+       退出登录
+      </mt-button>
     </div>
   </div>
 </template>
 
 <script>
+import {mapGetters, mapState} from 'vuex';
 
 export default {
+  computed:{
+    ...mapGetters(['userId']),
+    ...mapState(['user'])
 
+  },
+  methods:{
+    clickLogOut(){
+      this.$store.dispatch('logOut')
+    },
+    goLogin(){
+      if (this.userId) {
+        return
+      }
+      this.$router.push('/login')
+    }
+  }
 }
 </script>
 
@@ -120,6 +152,12 @@ export default {
             font-size 15px
             display flex
             align-items center
+          .username
+            text-align center
+            font-size 25px !important 
+            align-self center 
+            margin auto 10px
+
       .icon-jiantou1
         font-size 12px
         color #ffffff
@@ -190,6 +228,9 @@ export default {
             color #ccc
       .fuwuzhongxing
           margin-top 9px
+    .btn-logout
+      margin-top 12px
+      width 100%
 
         
         

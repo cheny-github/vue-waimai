@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer" v-if="typeof activeNumber !== 'undefined'">
       <ul class="menu-items">
           <li class="menu-item waimai" @click="go('/home',0)" 
           :class="{active:activeNumber===0}">
@@ -18,7 +18,7 @@
           </li>
           <li class="menu-item order" 
            :class="{active:activeNumber===2}"
-           @click="go('/order',2)" 
+           @click="go('/myorder',2)" 
           >
               <a>
                   <span class="iconfont icon-dingdan"></span>
