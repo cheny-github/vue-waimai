@@ -6,9 +6,9 @@
 </template>
 
 <script>
-  import Content from './components/Content/Content'
-  import Footer from './components/Footer/Footer'
-  import { reqAutoLogin } from './api';
+  import Content from './components/Content/Content';
+  import Footer from './components/Footer/Footer';
+  import { reqAutoLogin ,reqInfo,reqGoods,reqRatings} from './api';
   export default {
     name: 'app',
     components:{
@@ -17,9 +17,9 @@
     },
    async mounted(){
       //  自动登录
-      const token = localStorage.getItem('token_key') || '';
-      const result = await reqAutoLogin(token);
-      if (result.code ===0) {
+      const token = localStorage.getItem('token_key');
+      const result = token && await reqAutoLogin(token);
+      if (result && result.code ===0) {
         this.$store.dispatch('autoLogIn',result.data)
       }
     }

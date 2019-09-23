@@ -64,3 +64,19 @@ store文件夹下建立如下文件
 
 index.html页面中引入静态资源时使用绝对路径。
 
+## mockjs 
+坑
+Mock.mock(/api\/goods/,{code:0,data:goods})
+好习惯：
+第一个参数应该传入正则表达式。
+
+## betterScroll使用
+```js
+this.rightScroll = new BScroll(this.$refs.right, {
+    click: true, // 分发click事件
+    probeType: 1  // 非实时 触摸
+    // probeType: 2  // 实时 触摸
+    // probeType: 3  // 实时 触摸/惯性/编码
+})
+```
+

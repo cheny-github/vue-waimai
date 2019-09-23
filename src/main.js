@@ -1,3 +1,4 @@
+import './mock/mockServer';
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -6,7 +7,6 @@ import store from './store';
 import { ValidationProvider } from 'vee-validate';
 import './validator'
 import { Button } from 'mint-ui'
-
 
 Vue.config.productionTip = false
 

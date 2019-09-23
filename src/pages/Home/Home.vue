@@ -98,8 +98,9 @@ export default {
             this.address=this.$store.state.address.address 
         });
         //swiper必须在界面渲染完成后才能初始化，数据改了并不代表着页面渲染完毕，需要勾在nextTick上初始化swiper。
-
-        this.$store.dispatch('getCategories',()=>{
+        const token = localStorage.getItem("token_key")
+        this.$store.dispatch('getCategories',{
+            callback:()=>{
             this.$nextTick(
                 ()=>{
                     new Swiper('.swiper-container', {
@@ -109,11 +110,13 @@ export default {
                         }
                     })
                 }
-            )
+                )
+            },
+            token
         })
         //也可以 await this.$store.dispatch('getCategories')
         // 当这个promise有结果后 页面已经渲染完成了  
-        this.$store.dispatch('getShopList')
+        this.$store.dispatch('getShopList',{token})
     },
     data() {
         return {

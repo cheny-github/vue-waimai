@@ -17,9 +17,12 @@ export function reqAddress(latitude=40.10038,longtitude=116.36867) {
 /**
  * 请求商品分类列表
  */
-export function reqCategories(){
+export function reqCategories(token){
     return ajax({
-        url:'/index_category'
+        url:'/index_category',
+        headers:{
+            token
+        }
     });
 }
 
@@ -28,11 +31,14 @@ export function reqCategories(){
  * 请求附近商铺
  * @param {object} address  位置的经纬度信息
  */
-export function reqShops({longitude,latitude}){
+export function reqShops({longitude,latitude,token}){
     return ajax.get('/shops',{
         params:{
             latitude,
-            longitude
+            longitude,
+        },
+        headers:{
+            token
         }
     });
 }
@@ -102,4 +108,24 @@ export function reqUserInfo(){
  */
 export function reqAutoLogin(token) {
     return ajax.get('/auto_login',{headers:{token}})
+}
+
+/**
+ * 获取食品列表
+ */
+export function reqGoods(){
+    return ajax.get('/goods');
+}
+/** 
+ * 获取评论列表
+*/
+export function reqRatings() {
+    return ajax.get('/ratings');
+}
+
+/**
+ * 获取商家信息
+ */
+export function reqInfo() {
+    return ajax.get('/info')
 }

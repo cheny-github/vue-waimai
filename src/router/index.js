@@ -11,7 +11,7 @@ import Shop from '../pages/Shop/Shop.vue';
 import Foods from '../pages/Shop/Foods.vue';
 import Detail from '../pages/Shop/Detail.vue';
 import Rating from '../pages/Shop/Rating.vue';
-
+import {} from 'mint-ui';
 Vue.use(Router)
 
 const router =new Router(

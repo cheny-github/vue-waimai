@@ -20,16 +20,16 @@ export default {
             typeof callback ==="function" &&  callback();
         }
     },
-    async getCategories({commit},callback){
-        const result = await reqCategories()
+    async getCategories({commit},{callback,token}){
+        const result = await reqCategories(token)
         if (result.code ===0) {
             commit(RECIEVE_CATEGORIES,result.data);
             typeof callback ==="function" && callback();
         }
     },
-    async getShopList({commit,state}){
+    async getShopList({commit,state},{token}){
         const {latitude,longitude} = state;
-        const result = await reqShops({latitude,longitude} );
+        const result = await reqShops({latitude,longitude,token} );
         if (result.code ===0) {
             commit(RECEIVE_SHOPLIST,result.data);
 
