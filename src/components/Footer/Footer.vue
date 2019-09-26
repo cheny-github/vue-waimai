@@ -1,5 +1,8 @@
 <template>
-  <div class="footer" v-if="typeof activeNumber !== 'undefined'">
+  <div 
+   class="footer"
+       v-show="flag_ShowFooter"
+   >
       <ul class="menu-items">
           <li class="menu-item waimai" @click="go('/home',0)" 
           :class="{active:activeNumber===0}">
@@ -44,7 +47,8 @@ export default {
     data() {
         return {
             // 指定哪一个底部导航元素处于激活状态 
-            activeNumber:undefined
+            activeNumber:undefined,
+            path:this.$route.path
         }
     },
     methods: {
@@ -59,7 +63,13 @@ export default {
     },
     beforeMount(){
         this.activeNumber = this.$route.meta.activeNumber
-    }
+    },
+    computed: {
+        flag_ShowFooter(){
+            const flag =['/home','/search','/myorder','/profile'].indexOf(this.$route.path)!==-1;
+            return flag;
+        }
+    },
 }
 </script>
 

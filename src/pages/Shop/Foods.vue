@@ -1,25 +1,33 @@
 <template>
-  <div  class="goods">
+  <div>
+      <keep-alive>
+    <div  class="goods">
    <div class="menu-wrapper" ref="scrollLeft">
-      <ul>
+      <ul 
+        ref="menuList"
+      >
         <!-- class current -->
         <li class="menu-item " 
         v-for="(good, index) in goods" :key="index"
         :class="{current:index === currentIndex}"
+        @click="scrollRightTo(index)"
         >
             <span class="text bottom-border-1px" >  <img class="icon"
             v-if="good.icon" :src="good.icon">{{good.name}}</span>
           </li>
         </ul>
       </div>
-
+      <!-- 右边食物列表 -->
       <div class="foods-wrapper" ref="scrollRight">
         <ul ref="foodsUl">
-          <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
+          <li class="food-list-hook" v-for="(good, index) in goods" :key="index"
+          >
             <h1 class="title">{{good.name}}</h1>
             <ul>
+              <!-- 食物 -->
               <li class="food-item bottom-border-1px"
                 v-for="(food, index) in good.foods" :key="index"
+                @click.stop="showFoodDetail(food)"
               >
                 <div class="icon">
                   <img width="57" height="57"
@@ -33,9 +41,10 @@
                     <span>好评率{{food.rating}}%</span></div>
                   <div class="price">
                     <span class="now">￥{{food.price}}</span>
+                    <span class="old" v-if="food.oldPrice || food.oldPrice===0">￥{{food.oldPrice}}</span>
                   </div>
                   <div class="cartcontrol-wrapper">
-                    CartControl组件
+                    <CartControl :food="food"></CartControl>
                   </div>
                 </div>
               </li>
@@ -44,47 +53,84 @@
         </ul>
       </div>
     </div>
+
+  </keep-alive>
+  <Food 
+   v-if="showFood" 
+   :closeFoodDetail="closeFoodDetail"
+   :food="selectedFood"
+  ></Food>
+  </div>
+
+
+
+
 </template>
 
 <script>
 import {mapState} from 'vuex';
-import BScroll from '@better-scroll/core'
+import BScroll from '@better-scroll/core';
+import CartControl from 'components/CartControl/CartControl';
+import Food from './Food';
 export default {
+  components:{
+    CartControl,
+    Food
+  },
   computed: {
     ...mapState({
       goods:state=>state.shop.goods
     }),
     currentIndex(){
       const {foodsHeightList} =this;
-      const {scrollY}=this
-      return foodsHeightList.findIndex((foodsHeight,index)=> {
-          return scrollY>=foodsHeight&& scrollY <foodsHeightList[index+1]
-        })
+      const {scrollY}=this;
+      
+      const index = foodsHeightList.findIndex((foodsHeight,index)=> {
+        return scrollY>=foodsHeight&& scrollY <foodsHeightList[index+1]
+      })
+      // 滚动scrollLeft
+      const elementToScroll = this.$refs.menuList && 
+      this.$refs.menuList.children[index];
+     
+      elementToScroll
+        &&
+      this.scrollLeft.scrollToElement(elementToScroll,300)
 
+      return index;
     }
   },
   data() {
     return {
       scrollY:0,
-      foodsHeightList:[]
+      foodsHeightList:[],
+      showFood:false,
+      selectedFood:{} //要显示详情的Food
     }
   },
   watch:{
     goods(){
-     this.initScroll();
-    }
+     this.initScroll()
+    } 
   },
+
   methods:{
     initScroll(){
-       this.$nextTick(()=>{
+      this.$nextTick(
+        ()=>{
           this.scrollRight = new BScroll(this.$refs.scrollRight,{
-            probeType:3
+            probeType:1,
+            click:true
+          });
+          this.scrollRight.on("scrollEnd",({y})=>{
+            this.scrollY=Math.abs(y);
           })
           this.scrollRight.on("scroll",({y})=>{
             this.scrollY = -y;
-          })
+          });
+
           this.scrollLeft = new BScroll(this.$refs.scrollLeft,{
-            probeType:1
+            probeType:1,
+            click:true
           })
 
 
@@ -97,9 +143,32 @@ export default {
               foodsHeightList.push(height);
           });
           this.foodsHeightList = foodsHeightList;
-
-        });
+      })
+    },
+    scrollRightTo(index){
+      const elementToScroll= this.$refs.foodsUl.children[index];
+      // probeType=1，在编程跳转下不分发事件。scrollY在最后scrollEnd中更新
+      this.scrollRight.scrollToElement(elementToScroll,300);
+      // 由于 leftScroll的active class由scrollY决定，先修改scrollY激活当前点击的元素，以免出现延迟效果。
+      this.scrollY=this.foodsHeightList[index];
+    },
+    // 显示食品详情
+    showFoodDetail(food){
+      this.selectedFood =food;
+      this.showFood =true;
+    },
+    closeFoodDetail(){
+      this.showFood=false;
+      this.selectedFood = {};
     }
+    
+  },
+  beforeRouteEnter(to,from,next){
+    // 如果从下面两个路径跳过来，则表示goods已经初始化好了
+    if (['/shop/rating','/shop/detail'].indexOf(from.path)!==-1) {
+      next((component)=>component.initScroll())
+    }
+    next()
   }
 }
 </script>

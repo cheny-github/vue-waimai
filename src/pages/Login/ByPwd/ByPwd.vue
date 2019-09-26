@@ -68,7 +68,6 @@
 
 <script>
 import {ValidationObserver} from 'vee-validate';
-import {reqLoginByPassword} from '../../../api';
 export default {
   data() {
     return {

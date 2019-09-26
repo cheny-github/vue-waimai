@@ -21,26 +21,34 @@
         :class="{active:activeNumber===2}"
       >店家</router-link>
     </div>
-      <router-view></router-view>
+        <router-view></router-view>
+        <Cart></Cart>
   </div>
 </template>
 
 <script>
 import ShopHeader from "./ShopHeader";
+import Cart from './Cart';
 export default {
   components: {
-    ShopHeader
+    ShopHeader,
+    Cart
   },
   computed: {
     activeNumber() {
-      return this.$route.meta.activeNumber;
+      return this.$route.meta.shopActiveNumber;
     }
   },
   mounted() {
     this.$store.dispatch("getGoods");
     this.$store.dispatch("getInfo");
     this.$store.dispatch("getRatings");
-  }
+  },
+  data() {
+    return {
+      // flagShowCart:false
+    }
+  },
 };
 </script>
 

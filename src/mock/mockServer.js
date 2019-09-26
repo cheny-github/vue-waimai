@@ -1,6 +1,10 @@
 import Mock from 'mockjs';
 import {goods,ratings,info} from './data.json';
-
+let id=0;
+goods.forEach(good => 
+    {
+        good.foods.forEach(food=> food.id=id++)
+    })
 Mock.mock(/api\/goods/,{code:0,data:goods})
 Mock.mock(/api\/ratings/,{code:0,data:ratings})
 Mock.mock(/api\/info/,{code:0,data:info})

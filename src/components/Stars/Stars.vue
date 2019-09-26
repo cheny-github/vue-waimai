@@ -10,56 +10,65 @@
 
 <script>
 export default {
-    props:{
-        scoreText:Number
-    },
+    props:['scoreText']
+    ,
     data() {
         return {
             starImgUrls:[]
         }
     },
     beforeMount(){
-        const  {fullStarUrl, halfStarUrl,emptyStarUrl  } = getStarUrl() 
-        const scoreText =this.scoreText
-        const fullStar = ~~scoreText
-        const halfStar = Math.ceil(scoreText -fullStar)
-        const starUrl = []
-        for (let i = 0; i < fullStar; i++) {
-            starUrl.push(fullStarUrl)
-        }
-        if (halfStar !== 0 ) {
-            starUrl.push(halfStarUrl)
-        }
-        for (let i = 0; i < 5-fullStar-halfStar; i++) {
-            starUrl.push(emptyStarUrl)
-        }
-        this.starImgUrls = starUrl
- 
-        // 根据设备像素比获取star的url
-        function getStarUrl() {
-            const result = {
-                fullStarUrl:undefined,
-                halfStarUrl:undefined,
-                emptyStarUrl:undefined
-            };
-            switch (true) {
-                case devicePixelRatio>=3:
-                    result.fullStarUrl ='./images/stars/star_on@3x.png'
-                    result.halfStarUrl ='./images/stars/star_half@3x.png'
-                    result.emptyStarUrl ='./images/stars/star_off@3x.png'
-                    break;
-                case devicePixelRatio>=2:
-                    result.fullStarUrl ='./images/stars/star_on@2x.png'
-                    result.halfStarUrl ='./images/stars/star_half@2x.png'
-                    result.emptyStarUrl ='./images/stars/star_off@2x.png'
-                    break;
-                default :
-                    result.fullStarUrl ='./images/stars/star_on.png'
-                    result.halfStarUrl ='./images/stars/star_half.png'
-                    result.emptyStarUrl ='./images/stars/star_off.png'
-                    break;
+        this.computeStarCount();
+    },
+    methods:{
+        computeStarCount(){
+            const {fullStarUrl, halfStarUrl,emptyStarUrl  } = getStarUrl() 
+            const scoreText =this.scoreText
+            const fullStar = ~~scoreText
+            const halfStar = Math.ceil(scoreText -fullStar)
+            const starUrl = []
+            for (let i = 0; i < fullStar; i++) {
+                starUrl.push(fullStarUrl)
             }
-            return result;
+            if (halfStar !== 0 ) {
+                starUrl.push(halfStarUrl)
+            }
+            for (let i = 0; i < 5-fullStar-halfStar; i++) {
+                starUrl.push(emptyStarUrl)
+            }
+            this.starImgUrls = starUrl
+    
+            // 根据设备像素比获取star的url
+            function getStarUrl() {
+                const result = {
+                    fullStarUrl:undefined,
+                    halfStarUrl:undefined,
+                    emptyStarUrl:undefined
+                };
+                switch (true) {
+                    case devicePixelRatio>=3:
+                        result.fullStarUrl ='/images/stars/star_on@3x.png'
+                        result.halfStarUrl ='/images/stars/star_half@3x.png'
+                        result.emptyStarUrl ='/images/stars/star_off@3x.png'
+                        break;
+                    case devicePixelRatio>=2:
+                        result.fullStarUrl ='/images/stars/star_on@2x.png'
+                        result.halfStarUrl ='/images/stars/star_half@2x.png'
+                        result.emptyStarUrl ='/images/stars/star_off@2x.png'
+                        break;
+                    default :
+                        result.fullStarUrl ='/images/stars/star_on.png'
+                        result.halfStarUrl ='/images/stars/star_half.png'
+                        result.emptyStarUrl ='/images/stars/star_off.png'
+                        break;
+                }
+                return result;
+            }
+        }
+    },
+    watch:{
+        scoreText(){
+            this.computeStarCount();
         }
     }
 }

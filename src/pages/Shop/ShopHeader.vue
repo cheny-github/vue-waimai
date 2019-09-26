@@ -93,7 +93,6 @@
         <div class="mask-footer">
           <span class="iconfont icon-close" @click.stop="flag_showBriefModal=false"
           >
-            X
           </span>
         </div>
       </div>
@@ -125,7 +124,7 @@
             <span class="activity-content">{{support.content}}</span>
           </li>
         </ul>
-        <div class="activity-sheet-close">
+        <div class="activity-sheet-close" @click.stop="flag_showPromitionModal=false">
           <span class="iconfont icon-close"></span>
         </div>
       </div>

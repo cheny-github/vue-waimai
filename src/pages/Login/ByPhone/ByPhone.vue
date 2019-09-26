@@ -55,7 +55,7 @@
 
 <script>
     import {ValidationObserver} from 'vee-validate';
-    import {reqSendCode, reqLoginSMS} from '../../../api/index';
+    import {reqSendCode} from '../../../api/index';
     // import { Toast } from 'mint-ui';
     export default {
 

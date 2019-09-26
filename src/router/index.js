@@ -11,7 +11,10 @@ import Shop from '../pages/Shop/Shop.vue';
 import Foods from '../pages/Shop/Foods.vue';
 import Detail from '../pages/Shop/Detail.vue';
 import Rating from '../pages/Shop/Rating.vue';
+
+
 import {} from 'mint-ui';
+// import store from '@/store';
 Vue.use(Router)
 
 const router =new Router(
@@ -73,7 +76,7 @@ const router =new Router(
                         component:Foods,
                         name:'foods',
                         meta:{
-                            activeNumber:0,
+                            shopActiveNumber:0,
                         }
                     },
                     {
@@ -81,7 +84,7 @@ const router =new Router(
                         name:'rating',
                         component:Rating,
                         meta:{
-                            activeNumber:1,
+                            shopActiveNumber:1,
                         }
                     },
                     {
@@ -89,7 +92,7 @@ const router =new Router(
                         name:'detail',
                         component:Detail,
                         meta:{
-                            activeNumber:2,
+                            shopActiveNumber:2,
                         }
                     }
                 ],
@@ -117,5 +120,11 @@ const router =new Router(
     }
 )
 
+// const needShowFooter = ['/home','/search','/myorder','profile'];
+// router.afterEach((to,from)=>{
+//     if (needShowFooter.some(path=>from.path ===path)) {
+//         from.meta.activeNumber=undefined;
+//     }
+// })
 
 export default router

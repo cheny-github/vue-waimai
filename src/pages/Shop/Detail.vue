@@ -1,6 +1,6 @@
 <template>
   <div>
-      商家
+      店家
   </div>
 </template>
 

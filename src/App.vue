@@ -8,7 +8,7 @@
 <script>
   import Content from './components/Content/Content';
   import Footer from './components/Footer/Footer';
-  import { reqAutoLogin ,reqInfo,reqGoods,reqRatings} from './api';
+  import { reqAutoLogin} from './api';
   export default {
     name: 'app',
     components:{
