@@ -22,7 +22,7 @@
       >店家</router-link>
     </div>
         <router-view></router-view>
-        <Cart></Cart>
+        <Cart v-if="$route.path === '/shop/foods'"></Cart>
   </div>
 </template>
 
