@@ -11,11 +11,11 @@ import Shop from '../pages/Shop/Shop.vue';
 import Foods from '../pages/Shop/Foods.vue';
 import Detail from '../pages/Shop/Detail.vue';
 import Rating from '../pages/Shop/Rating.vue';
-
+import store from '@/store';
 
 import {} from 'mint-ui';
-// import store from '@/store';
 Vue.use(Router)
+
 
 const router =new Router(
     {
@@ -120,11 +120,23 @@ const router =new Router(
     }
 )
 
-// const needShowFooter = ['/home','/search','/myorder','profile'];
-// router.afterEach((to,from)=>{
-//     if (needShowFooter.some(path=>from.path ===path)) {
-//         from.meta.activeNumber=undefined;
-//     }
-// })
+function userLogged() {
+    const userStr = sessionStorage.getItem('user_key')
+    let user;
+    try {
+        user = JSON.parse(userStr) || {}
+    } catch (error) {
+        user = {};
+    }
+    return  user._id !== undefined;
+}
+
+router.beforeEach((to,from,next)=>{
+    if (userLogged() && to.path.includes('/login')) {
+        next('/home')
+    }else{
+        next();
+    }
+})
 
 export default router

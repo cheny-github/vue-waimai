@@ -82,12 +82,12 @@ export default {
         width 10px
         font-size 0px
         margin 0 1px
-        background url('./images/stars/star_off.png') 
+        background url('/images/stars/star_off.png') 
         background-size cover
         @media (-webkit-min-device-pixel-ratio:2),(min-resolution:2)
-            background url('./images/stars/star_off@2x.png') 
+            background url('/images/stars/star_off@2x.png') 
             background-size cover
         @media (-webkit-min-device-pixel-ratio:3),(min-resolution:3)
-            background url('./images/stars/star_off@3x.png') 
+            background url('/images/stars/star_off@3x.png') 
             background-size cover
 </style>

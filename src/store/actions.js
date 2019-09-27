@@ -44,11 +44,13 @@ export default {
        }
     },   
     autoLogIn({commit},user){
-         commit(AUTOLOGIN,user)
+        sessionStorage.setItem('user_key',JSON.stringify(user));
+        commit(AUTOLOGIN,user)
     },
     logOut({commit}){
-        localStorage.removeItem('token_key')
-        commit(LOGOUT)
+        localStorage.removeItem('token_key');
+        sessionStorage.removeItem('user_key');
+        commit(LOGOUT);
     },
 
     async loginByPwd({commit},{username,password,captcha}){
@@ -71,5 +73,6 @@ function handleLogSuccess(result,commit) {
     Reflect.deleteProperty(user,'token');
     commit(REVEIVE_USER,user);
     localStorage.setItem("token_key",token);
+    sessionStorage.setItem('user_key',JSON.stringify(user));
     router.back()
 }

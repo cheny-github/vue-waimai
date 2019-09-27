@@ -20,6 +20,7 @@
       const token = localStorage.getItem('token_key');
       const result = token && await reqAutoLogin(token);
       if (result && result.code ===0) {
+        console.log('autoLogIn')
         this.$store.dispatch('autoLogIn',result.data)
       }
     }

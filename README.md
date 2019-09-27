@@ -134,3 +134,9 @@ goods在访问/shop这个路由的时侯请求。
 每次访问/shop/foods时，先检查是不是从兄弟路由跳过来的。如果是，那么在next方法中初始化。
 
 ## inline-block 想要撑开父容器的宽度，那么父容器也用inline-block
+
+
+## 问题：做全局路由守卫时，想拦截已登录用户的/login路由。
+如果直接从store中拿user._id判断是否用户已经登录是不行的。原因是:从地址栏输入地址后回车，会从新请求spa的所有资源，app实例也会重新初始化，此时在store中的user还在网络请求中，是拿不到user._id的。
+解决方法：
+    当用户登录成功后，把user对象序列化到sessionStorage中，然后每次从sessionStorage中取出user._id判断即可。
